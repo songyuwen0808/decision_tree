@@ -6,7 +6,6 @@
 #include <stdarg.h>
 #include <time.h>
 #include <string.h>
-#include <ros/ros.h>
 
 using namespace std;
 
@@ -72,7 +71,6 @@ class LogWrite
 public:
 	LogWrite()
 	{
-		m_bIsInitHandle	= false;
 		m_bDebug		= true;
 		m_bFile			= false;
 		m_bScreen		= true;
@@ -88,7 +86,7 @@ public:
 
 public:
 	/* 设置日志输出路径 */
-	void SetLogPath(char* i_pcLogPath)
+	void SetLogPath(const char* i_pcLogPath)
 	{
 		strncpy(m_szLogPath, i_pcLogPath, LOG_PATH_MAX_LEN);
 	}
@@ -211,9 +209,6 @@ private:
 	bool m_bScreen;								/* 是否输出到屏幕 */
 	bool m_bNeedPreFix;							/* 是否需要输出时间 */
 	char m_szLogPath[LOG_PATH_MAX_LEN];			/* log输出路径 */
-	bool m_bIsInitHandle;
-	ros::NodeHandle* l_pobjNodeHandle;
-	ros::Publisher	l_objPubLog;
 
 };
 

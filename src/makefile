@@ -1,4 +1,4 @@
-objects=main.o decision_tree.o
+objects=main.o decision_tree.o tools.o
 
 LIBS=
 
@@ -13,11 +13,14 @@ BIN=decision_tree
 ${BIN}:${objects}
 	g++ ${LDFLAGS} -o ${BIN} ${objects} ${LIBS} ${INCLUDE} ${DEFINE}
 
-main.o:main.cpp decision_tree.h
+main.o:main.cpp decision_tree.h tools.h
 	g++ ${LDFLAGS} -c main.cpp
 
 decision_tree.o:decision_tree.cpp decision_tree.h
 	g++ ${LDFLAGS} -c decision_tree.cpp
+
+tools.o:tools.cpp tools.h
+	g++ ${LDFLAGS} -c tools.cpp
 
 clean:
 	rm -f ${BIN} ${objects} core
