@@ -9,7 +9,7 @@
 
 using namespace std;
 
-/* ´òÓ¡ */
+/* æ‰“å° */
 #ifndef _PRINTF
 #define _PRINTF(level, fmt, ...) \
 	do{\
@@ -47,23 +47,23 @@ using namespace std;
 #endif
 
 
-/* ÈÕÖ¾Êä³öÄÚÈİ×î´ó³¤¶È */
+/* æ—¥å¿—è¾“å‡ºå†…å®¹æœ€å¤§é•¿åº¦ */
 #define LOG_COMMENT_MAX_LEN		8192
 
-/* ÈÕÖ¾Êä³öÂ·¾¶×î´ó³¤¶È */
+/* æ—¥å¿—è¾“å‡ºè·¯å¾„æœ€å¤§é•¿åº¦ */
 #define LOG_PATH_MAX_LEN		256
 #define LOG_FILE_NAME_MAX_LEN	128
 
-/* ÆÕÍ¨Êı×é×î´ó³¤¶È */
+/* æ™®é€šæ•°ç»„æœ€å¤§é•¿åº¦ */
 #define NORMAL_STR_MAX_LEN		8192
 
-/* ÈÕÖ¾Êä³ö¼¶±ğ */
-#define LEVEL_INFO 			 0		// ¼ÇÂ¼ÈÕ³£ÏÔÊ¾ĞÅÏ¢
-#define LEVEL_DEBUG 		 1		// ¼ÇÂ¼Ò»Ğ©ÁÙÊ±µ÷ÊÔĞÅÏ¢
-#define LEVEL_TRACE 		 2		// ¼ÇÂ¼Ò»Ğ©¸ú×ÙĞÅÏ¢
-#define LEVEL_WARNING 		 3 		// ¼ÇÂ¼¾¯¸æĞÅÏ¢
-#define LEVEL_ERROR 		 4 		// ¼ÇÂ¼´íÎóĞÅÏ¢
-#define LEVEL_FATAL 		 5		// ¼ÇÂ¼ÑÏÖØ´íÎóĞÅÏ¢		
+/* æ—¥å¿—è¾“å‡ºçº§åˆ« */
+#define LEVEL_INFO 			 0		// è®°å½•æ—¥å¸¸æ˜¾ç¤ºä¿¡æ¯
+#define LEVEL_DEBUG 		 1		// è®°å½•ä¸€äº›ä¸´æ—¶è°ƒè¯•ä¿¡æ¯
+#define LEVEL_TRACE 		 2		// è®°å½•ä¸€äº›è·Ÿè¸ªä¿¡æ¯
+#define LEVEL_WARNING 		 3 		// è®°å½•è­¦å‘Šä¿¡æ¯
+#define LEVEL_ERROR 		 4 		// è®°å½•é”™è¯¯ä¿¡æ¯
+#define LEVEL_FATAL 		 5		// è®°å½•ä¸¥é‡é”™è¯¯ä¿¡æ¯		
 
 
 class LogWrite
@@ -85,13 +85,13 @@ public:
 	};
 
 public:
-	/* ÉèÖÃÈÕÖ¾Êä³öÂ·¾¶ */
+	/* è®¾ç½®æ—¥å¿—è¾“å‡ºè·¯å¾„ */
 	void SetLogPath(const char* i_pcLogPath)
 	{
 		strncpy(m_szLogPath, i_pcLogPath, LOG_PATH_MAX_LEN);
 	}
 
-	/* Êä³öÈÕÖ¾ */
+	/* è¾“å‡ºæ—¥å¿— */
 	void WriteLog(const char* i_pcMsg, int i_nLevel, bool i_bFlush)
 	{
 		char l_szLevel[NORMAL_STR_MAX_LEN] = {0};
@@ -164,7 +164,7 @@ public:
 
 
 public:
-	/* Ìá¹©½Ó¿Ú */
+	/* æä¾›æ¥å£ */
 	static LogWrite& Instance()
 	{
 		static LogWrite g_oInst;
@@ -203,12 +203,12 @@ private:
 
 
 private:
-	char m_szBuffer[LOG_COMMENT_MAX_LEN];		/* logÊä³ö×î´ó³¤¶È */
-	bool m_bDebug;								/* ÊÇ·ñÊä³ödebugĞÅÏ¢ */
-	bool m_bFile;								/* ÊÇ·ñÊä³öµ½ÎÄ¼ş */
-	bool m_bScreen;								/* ÊÇ·ñÊä³öµ½ÆÁÄ» */
-	bool m_bNeedPreFix;							/* ÊÇ·ñĞèÒªÊä³öÊ±¼ä */
-	char m_szLogPath[LOG_PATH_MAX_LEN];			/* logÊä³öÂ·¾¶ */
+	char m_szBuffer[LOG_COMMENT_MAX_LEN];		/* logè¾“å‡ºæœ€å¤§é•¿åº¦ */
+	bool m_bDebug;								/* æ˜¯å¦è¾“å‡ºdebugä¿¡æ¯ */
+	bool m_bFile;								/* æ˜¯å¦è¾“å‡ºåˆ°æ–‡ä»¶ */
+	bool m_bScreen;								/* æ˜¯å¦è¾“å‡ºåˆ°å±å¹• */
+	bool m_bNeedPreFix;							/* æ˜¯å¦éœ€è¦è¾“å‡ºæ—¶é—´ */
+	char m_szLogPath[LOG_PATH_MAX_LEN];			/* logè¾“å‡ºè·¯å¾„ */
 
 };
 

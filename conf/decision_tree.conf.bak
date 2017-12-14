@@ -1,0 +1,40 @@
+﻿[DATA_PATH]
+# 样本路径
+sample_path = ./data/sample
+# 输入数据路径
+input_path = ./data/in
+# 输出数据路径
+output_path = ./data/output
+# 输入数据备份路径
+bak_path = ./data/bak
+
+[DECISION_INFO]
+# 特征各字段数据类型，请严格按照顺序配置，用英文","分割
+# 所有数值类型全部按照连续值计算方式计算
+# 在数据中，如果没有相应数据，即缺省值时，请使用"NULL"字符串占位，不区分大小写
+# 在训练样本中，最后一位默认为期望结果，类型为string，不用配置在此配置参数中，为隐藏参数
+# 连续值：num      当遇到非数字时，会当作缺省值处理。如果非连续值，请使用字符串类型
+# 字符串：string   所有数据当作字符串处理，包括数字
+# 多变量：multi    使用"-"分割
+features_type = string, string, string, string, string, string, float, float
+# 特征名称，可配置为空
+features_name = 色泽, 根蒂, 敲声, 纹理, 脐部, 触感, 密度, 含糖率
+# 最优划分属性方法
+# 0 : 信息熵
+# 1 : 信息增益
+# 2 : 信息增益率
+# 3 : 基尼指数
+calc_type = 0
+# 剪枝类型
+# 0 : 不剪枝
+# 1 : 预剪枝
+# 2 : 后剪枝
+prune_type = 0
+
+
+[LOG_INFO]
+log_path = ./log
+is_debug = 1
+is_to_file = 1
+is_to_screen = 1
+pre_fix = decision_tree

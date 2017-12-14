@@ -2,9 +2,9 @@
 
 
 /*
-nSection参数说明：
-对于解析url类似字符串时，因为url中可能出现"="等字符，导致对不应该拆分的字符串进行拆分
-所以添加此参数，对拆分次数进行限制
+nSection:
+for param like url, it may contains character "=" or something else
+so add this parameter, when "i_nSection != -1", split the string into "i_nSection" parts
 */
 void Tools::SplitString(const string& i_strSrcString, const string& i_strDelim, vector<string>& o_vecResult, int i_nSection)
 {
@@ -41,14 +41,14 @@ int Tools::LoadConfig(string& i_strFilePath, sConfig& o_sConfig)
 {
 	if (0 >= i_strFilePath.length())
 	{
-		E_PRINTF("配置文件路径错误!");
+		E_PRINTF("config file path is error!");
 		return FAIL;
 	}
 
 	ifstream l_objConfigFile(i_strFilePath.c_str());
 	if (!l_objConfigFile.is_open())
 	{
-		E_PRINTF("打开配置文件失败，请确认配置文件是否正确，当前配置文件路径 = %s", i_strFilePath.c_str());
+		E_PRINTF("Failed to open config file, please make sure config file path is correct!current path = %s", i_strFilePath.c_str());
 		return FAIL;
 	}
 	
@@ -84,8 +84,8 @@ int Tools::LoadConfig(string& i_strFilePath, sConfig& o_sConfig)
 			o_sConfig.m_nPruneType = atoi(l_vecSplitContent[1].c_str());
 		else if (!l_vecSplitContent[0].compare("features_type"))
 			SplitString(l_vecSplitContent[1], l_strDataDelim, o_sConfig.m_vecFeaturesType);
-		else if (!l_vecSplitContent[0].compare("expect_type"))
-			SplitString(l_vecSplitContent[1], l_strDataDelim, o_sConfig.m_vecExpectType);
+		else if (!l_vecSplitContent[0].compare("features_name"))
+			SplitString(l_vecSplitContent[1], l_strDataDelim, o_sConfig.m_vecFeaturesName);
 		else if (!l_vecSplitContent[0].compare("log_path"))
 			LogWrite::Instance().SetLogPath(l_vecSplitContent[1].c_str());
 		else if (!l_vecSplitContent[0].compare("is_debug"))
@@ -97,6 +97,16 @@ int Tools::LoadConfig(string& i_strFilePath, sConfig& o_sConfig)
 		else if (!l_vecSplitContent[0].compare("pre_fix"))
 			LogWrite::Instance().SetNeedPreFix(l_vecSplitContent[1].c_str());
 	}
+    
+    if (o_sConfig.m_vecFeaturesType.size() > o_sConfig.m_vecFeaturesName.size())
+    {
+        for(int l_nCount = o_sConfig.m_vecFeaturesName.size(); l_nCount < o_sConfig.m_vecFeaturesType.size(); ++l_nCount)
+        {
+            char l_szTmp[FEATURE_NAME_MAX_LEN + 1] = "0";
+            snprintf(l_szTmp, FEATURE_NAME_MAX_LEN, "%dth_feature", l_nCount + 1);
+            o_sConfig.m_vecFeaturesName.push_back(string(l_szTmp));
+        }
+    }
 	
 	return SUCCESS;
 }

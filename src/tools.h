@@ -1,39 +1,36 @@
+#ifndef __TOOLS_H__
+#define __TOOLS_H__
+
 #include <iostream>
 #include <stdlib.h>
 #include <vector>
 #include <fstream>
 #include <string>
+#include <map>
 #include "LogWrite.h"
 using namespace std;
 
-/* 特征类型 */
-#define FEATURES_TYPE_STRING	"string"
-#define FEATURES_TYPE_NUM	   "num"
+/* features type */
+#define FEATURES_TYPE_STRING    "string"
+#define FEATURES_TYPE_NUM       "num"
+#define FEATURES_TYPE_MILTI     "multi"
 
-/* 返回值类型 */
+/* return type */
 #define SUCCESS 0
 #define FAIL	-1
 
+#define FEATURE_NAME_MAX_LEN    64
+
 
 typedef struct _sConfig{
-	/* 最优划分属性方法 */
 	int	m_nCalcType;
-	/* 剪枝类型 */
 	int	m_nPruneType;
-	/* 样本数据路径 */
 	string m_strSamplePath;
-	/* 输入数据路径 */
 	string m_strInPath;
-	/* 输出数据路径 */
 	string m_strOutPath;
-	/* 输入数据备份路径 */
 	string m_strBakPath;
-	/* log路径 */
-	string m_strLogPath;
-	/* 特种各字段数据类型, 具体参照"FEATURES_TYPE_"开头的宏定义 */
 	vector<string> m_vecFeaturesType;
-	/* 期望的输出结果 */
-	vector<string> m_vecExpectType;
+	vector<string> m_vecFeaturesName;
 
 	_sConfig()
 	{
@@ -43,10 +40,14 @@ typedef struct _sConfig{
 		m_strInPath = "";
 		m_strOutPath = "";
 		m_strBakPath = "";
-		m_strLogPath = "";
 		m_vecFeaturesType.clear();
-		m_vecExpectType.clear();
-	}
+		m_vecFeaturesName.clear();
+	};
+    
+    int CheckParam()
+    {
+        return !(m_strSamplePath.length() * m_strInPath.length() * m_strOutPath.length() * m_strBakPath.length() * m_vecFeaturesType.size() * m_vecFeaturesName.size());
+    };
 }sConfig;
 
 
@@ -61,7 +62,7 @@ public:
 	{
 		static Tools g_objTools;
 		return g_objTools;
-	}
+	};
 
 public:
 	void SplitString(const string& strSrcString, const string& strDelim, vector<std::string>& vecResult, int nSection = -1);
@@ -69,3 +70,4 @@ public:
 	int LoadConfig(string& i_strFilePath, sConfig& o_sConfig);
 };
 
+#endif
