@@ -6,7 +6,7 @@ nSection:
 for param like url, it may contains character "=" or something else
 so add this parameter, when "i_nSection != -1", split the string into "i_nSection" parts
 */
-void Tools::SplitString(const string& i_strSrcString, const string& i_strDelim, vector<string>& o_vecResult, int i_nSection)
+void Tools::SplitString(const string& i_strSrcString, const string& i_strDelim, VEC_STR& o_vecResult, int i_nSection)
 {
 	size_t l_nLast = 0;
 	size_t index = i_strSrcString.find_first_of(i_strDelim, l_nLast);
@@ -56,7 +56,7 @@ int Tools::LoadConfig(string& i_strFilePath, sConfig& o_sConfig)
 	string		  l_strDelCharacter   = " ";
 	string		  l_strDelim		  = "=";
 	string		  l_strDataDelim	  = ",";
-	vector<string>  l_vecSplitContent;
+	VEC_STR		  l_vecSplitContent;
 	l_vecSplitContent.clear();
 	while(getline(l_objConfigFile, l_strContent))
 	{
@@ -97,17 +97,42 @@ int Tools::LoadConfig(string& i_strFilePath, sConfig& o_sConfig)
 		else if (!l_vecSplitContent[0].compare("pre_fix"))
 			LogWrite::Instance().SetNeedPreFix(l_vecSplitContent[1].c_str());
 	}
-    
-    if (o_sConfig.m_vecFeaturesType.size() > o_sConfig.m_vecFeaturesName.size())
-    {
-        for(int l_nCount = o_sConfig.m_vecFeaturesName.size(); l_nCount < o_sConfig.m_vecFeaturesType.size(); ++l_nCount)
-        {
-            char l_szTmp[FEATURE_NAME_MAX_LEN + 1] = "0";
-            snprintf(l_szTmp, FEATURE_NAME_MAX_LEN, "%dth_feature", l_nCount + 1);
-            o_sConfig.m_vecFeaturesName.push_back(string(l_szTmp));
-        }
-    }
+	
+	if (o_sConfig.m_vecFeaturesType.size() > o_sConfig.m_vecFeaturesName.size())
+	{
+		for(int l_nCount = o_sConfig.m_vecFeaturesName.size(); l_nCount < o_sConfig.m_vecFeaturesType.size(); ++l_nCount)
+		{
+			char l_szTmp[FEATURE_NAME_MAX_LEN + 1] = "0";
+			snprintf(l_szTmp, FEATURE_NAME_MAX_LEN, "%dth_feature", l_nCount + 1);
+			o_sConfig.m_vecFeaturesName.push_back(string(l_szTmp));
+		}
+	}
 	
 	return SUCCESS;
+}
+
+void Tools::QSort(VEC_FLOAT& io_vecNumList, int i_nLow, int i_nHigh)
+{
+	if ((0 >= io_vecNumList.size()) || (i_nLow >= i_nHigh))
+		return;
+
+	int l_nFirst	= i_nLow;
+	int l_nLast		= i_nHigh;
+	float l_fMiddleNum = io_vecNumList[l_nFirst];
+	while (l_nFirst < l_nLast)
+	{
+		for (; (io_vecNumList[l_nLast] >= l_fMiddleNum) && (l_nLast > l_nFirst); --l_nLast);
+		io_vecNumList[l_nFirst] = io_vecNumList[l_nLast];
+
+		for (; (io_vecNumList[l_nFirst] <= l_fMiddleNum) && (l_nLast > l_nFirst); ++l_nFirst);
+		io_vecNumList[l_nLast] = io_vecNumList[l_nFirst];
+	}
+
+	io_vecNumList[l_nFirst] = l_fMiddleNum;
+	
+	QSort(io_vecNumList, i_nLow, l_nFirst - 1);
+	QSort(io_vecNumList, l_nFirst + 1, i_nHigh);
+	
+	return;
 }
 

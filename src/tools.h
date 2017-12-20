@@ -11,15 +11,23 @@
 using namespace std;
 
 /* features type */
-#define FEATURES_TYPE_STRING    "string"
-#define FEATURES_TYPE_NUM       "num"
-#define FEATURES_TYPE_MILTI     "multi"
+#define FEATURES_TYPE_STRING	"string"
+#define FEATURES_TYPE_NUM		"float"
+#define FEATURES_TYPE_MILTI		"multi"
 
 /* return type */
 #define SUCCESS 0
 #define FAIL	-1
 
-#define FEATURE_NAME_MAX_LEN    64
+#define FEATURE_NAME_MAX_LEN	64
+
+typedef vector<string> VEC_STR;
+typedef vector<VEC_STR> VEC_STRVEC;
+
+typedef vector<float> VEC_FLOAT;
+
+typedef map<string, int> MAP_STR_INT;
+typedef map<string, MAP_STR_INT> MAP_STR_STRINT_MAP;
 
 
 typedef struct _sConfig{
@@ -29,8 +37,8 @@ typedef struct _sConfig{
 	string m_strInPath;
 	string m_strOutPath;
 	string m_strBakPath;
-	vector<string> m_vecFeaturesType;
-	vector<string> m_vecFeaturesName;
+	VEC_STR m_vecFeaturesType;
+	VEC_STR m_vecFeaturesName;
 
 	_sConfig()
 	{
@@ -43,11 +51,11 @@ typedef struct _sConfig{
 		m_vecFeaturesType.clear();
 		m_vecFeaturesName.clear();
 	};
-    
-    int CheckParam()
-    {
-        return !(m_strSamplePath.length() * m_strInPath.length() * m_strOutPath.length() * m_strBakPath.length() * m_vecFeaturesType.size() * m_vecFeaturesName.size());
-    };
+	
+	int CheckParam()
+	{
+		return !(m_strSamplePath.length() * m_strInPath.length() * m_strOutPath.length() * m_strBakPath.length() * m_vecFeaturesType.size() * m_vecFeaturesName.size());
+	};
 }sConfig;
 
 
@@ -68,6 +76,7 @@ public:
 	void SplitString(const string& strSrcString, const string& strDelim, vector<std::string>& vecResult, int nSection = -1);
 	void DelCharacter(string& io_strSrc, const string& i_strCharacter);
 	int LoadConfig(string& i_strFilePath, sConfig& o_sConfig);
+	void QSort(VEC_FLOAT& io_vecNumList, int i_nLow, int i_nHigh);
 };
 
 #endif

@@ -2,21 +2,21 @@
 #include <dirent.h>
 #include "decision_tree.h"
 
-int DecisionTree::LoadSampleFile(SAMPLE& o_sSampleData)
+int DecisionTree::LoadSampleFile(VEC_STRVEC& o_sSampleData)
 {
-	vector<string> l_vecFileList;
+	VEC_STR l_vecFileList;
 	l_vecFileList.clear();
 
 	DIR* l_psDirectory = NULL;
 	l_psDirectory = opendir(m_psConfig->m_strSamplePath.c_str());
 	if (NULL == l_psDirectory)
-    {
-        E_PRINTF("open directory failed!sample file path = %s", m_psConfig->m_strSamplePath.c_str());
-        return SUCCESS;
-    }
+	{
+		E_PRINTF("open directory failed!sample file path = %s", m_psConfig->m_strSamplePath.c_str());
+		return SUCCESS;
+	}
 
 	struct dirent* l_psDirent = NULL;
-    while(NULL != (l_psDirent = readdir(l_psDirectory)))
+	while(NULL != (l_psDirent = readdir(l_psDirectory)))
 	{
 		/*
 		.			: current dir
@@ -45,7 +45,7 @@ int DecisionTree::LoadSampleFile(SAMPLE& o_sSampleData)
 			if (!l_strContent.compare(0, 1, "#"))
 				continue;
 
-			FEATURE l_vecFeatures;
+			VEC_STR l_vecFeatures;
 			l_vecFeatures.clear();
 			
 			Tools::GetToolsInstance().DelCharacter(l_strContent, l_strDelCharacter);
@@ -62,5 +62,29 @@ int DecisionTree::LoadSampleFile(SAMPLE& o_sSampleData)
 	closedir(l_psDirectory);
 
 	return SUCCESS;
+}
+
+bool DecisionTree::isHomogeneous(VEC_STRVEC& i_sSampleData)
+{
+	if (0 >= i_sSampleData.size())
+		return true;
+
+	int l_nTypeIndex	= i_sSampleData[0].size() - 1;
+
+	if (0 > l_nTypeIndex)
+		return true;
+	
+	string l_nTypeName	= i_sSampleData[0][l_nTypeIndex];
+
+	int l_nCount = 0;
+	for(l_nCount = 1; l_nCount < i_sSampleData.size(); ++l_nCount)
+	{
+		// D_PRINTF("sample type = %s, first type name = %s", i_sSampleData[l_nCount][l_nTypeIndex].c_str(), l_nTypeName.c_str());
+		if (0 != i_sSampleData[l_nCount][l_nTypeIndex].compare(l_nTypeName.c_str()))
+			return false;
+	}
+
+
+	return true;
 }
 

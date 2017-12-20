@@ -30,17 +30,17 @@ int main(int argc, char* argv[])
 
 	DecisionTree* l_objDecisionTree = CreateDesicionTreeObject(l_sConfig.m_nCalcType);
 	if (NULL == l_objDecisionTree)
-    {
-        E_PRINTF("failed to create object by calc type, please check parameter calc_type in config file!");
-        return FAIL;
-    }
-    
-    l_objDecisionTree->SetConfig(l_sConfig);
+	{
+		E_PRINTF("failed to create object by calc type, please check parameter calc_type in config file!");
+		return FAIL;
+	}
+	
+	l_objDecisionTree->SetConfig(l_sConfig);
 	if (SUCCESS != l_objDecisionTree->Train())
-    {
-        E_PRINTF("train failed!");
-        return FAIL;
-    }
+	{
+		E_PRINTF("train failed!");
+		return FAIL;
+	}
 	l_objDecisionTree->run();
 	
 	return SUCCESS;
